@@ -25,9 +25,13 @@ image3 = pygame.image.load("Walking4.png")
 image4 = pygame.image.load("Walking3.png")
 image5 = pygame.image.load("Walking2.png")
 image6 = pygame.image.load("Walking1.png")
+SpaceLizard1 = pygame.image.load("normal.png")
     
 
 SpaceLizardConstant = Pyganim.PygAnimation([("normal.png", 1)])
+
+SpaceLizardLeft = pygame.transform.flip(SpaceLizard1, True, False)
+SpaceLizardLeftIdle = Pyganim.PygAnimation([(SpaceLizardLeft, 1)])
 
 SpaceLizardAnim = Pyganim.PygAnimation([("Walking1.png", 0.1),
                                         ("Walking2.png", 0.1),
@@ -54,7 +58,9 @@ SpaceLizardBack = Pyganim.PygAnimation([(image1, 0.1),
 SpaceLizardConstant.play()
 SpaceLizardAnim.play()
 SpaceLizardBack.play()
-
+SpaceLizardLeftIdle.play()
+global Forwards
+Forwards = True
 
 #Functions
 def PlayerInfo():
@@ -92,7 +98,10 @@ def gameLoop():
         elif keys[pygame.K_LEFT]:
             B_Walk(PlayerLoc[0],PlayerLoc[1])
         else:
-            SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+            if Forwards == True:
+                SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+            elif Forwards == False:
+                SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
         pygame.display.update()
         clock.tick(60)
 
@@ -127,7 +136,7 @@ def CollisionCheck(x,y,w,h,x2,y2,w2,h2):
       collisionCheck = True  
 
 def F_Walk(playerX, playerY):
-    global NextScene
+    Forwards = True
     xVal = int(playerX)
     yVal = int(playerY)
     for y in range(0,2):
@@ -140,7 +149,7 @@ def F_Walk(playerX, playerY):
     clock.tick(30)
 
 def B_Walk(playerX, playerY):
-    global PreScene
+    Forwards = False
     xVal = int(playerX)
     yVal = int(playerY)
     for x in range(0,2):
@@ -155,8 +164,6 @@ def B_Walk(playerX, playerY):
     PlayerLoc.append(yVal)
     clock.tick(30)
 
-def displayImage(xVal, yVal, ImageCheck):
-    SCREEN.blit(allWalkImages[ImageCheck], (xVal, yVal))
 
 
 
