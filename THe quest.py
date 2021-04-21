@@ -30,7 +30,11 @@ SpaceLizard1 = pygame.image.load("normal.png")
 
 SpaceLizardConstant = Pyganim.PygAnimation([("normal.png", 1)])
 
-SpaceLizardLeft = pygame.transform.flip(SpaceLizard1, True, False)
+SpaceLizardLeft = SpaceLizardConstant.getCopy()
+SpaceLizardLeft.flip(True, False)
+SpaceLizardLeft.makeTransformsPermanent()
+
+#SpaceLizardLeft = pygame.transform.flip(SpaceLizard1, True, False)
 SpaceLizardLeftIdle = Pyganim.PygAnimation([(SpaceLizardLeft, 1)])
 
 SpaceLizardAnim = Pyganim.PygAnimation([("Walking1.png", 0.1),
@@ -55,10 +59,12 @@ SpaceLizardBack = Pyganim.PygAnimation([(image1, 0.1),
                                         (image5, 0.1),
                                         (image6, 0.1)])
 
+
 SpaceLizardConstant.play()
 SpaceLizardAnim.play()
 SpaceLizardBack.play()
 SpaceLizardLeftIdle.play()
+                                               
 global Forwards
 Forwards = True
 
@@ -146,7 +152,7 @@ def F_Walk(playerX, playerY):
     SpaceLizardAnim.blit(SCREEN, (xVal, yVal))
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
-    clock.tick(30)
+
 
 def B_Walk(playerX, playerY):
     Forwards = False
@@ -162,7 +168,7 @@ def B_Walk(playerX, playerY):
     SpaceLizardBack.blit(SCREEN, (xVal, yVal))
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
-    clock.tick(30)
+
 
 
 
