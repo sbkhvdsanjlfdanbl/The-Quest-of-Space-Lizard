@@ -30,11 +30,7 @@ SpaceLizard1 = pygame.image.load("normal.png")
 
 SpaceLizardConstant = Pyganim.PygAnimation([("normal.png", 1)])
 
-SpaceLizardLeft = SpaceLizardConstant.getCopy()
-SpaceLizardLeft.flip(True, False)
-SpaceLizardLeft.makeTransformsPermanent()
-
-#SpaceLizardLeft = pygame.transform.flip(SpaceLizard1, True, False)
+SpaceLizardLeft = pygame.transform.flip(SpaceLizard1, True, False)
 SpaceLizardLeftIdle = Pyganim.PygAnimation([(SpaceLizardLeft, 1)])
 
 SpaceLizardAnim = Pyganim.PygAnimation([("Walking1.png", 0.1),
@@ -65,9 +61,6 @@ SpaceLizardAnim.play()
 SpaceLizardBack.play()
 SpaceLizardLeftIdle.play()
                                                
-global Forwards
-Forwards = True
-
 #Functions
 def PlayerInfo():
     global PlayerLoc
@@ -92,6 +85,7 @@ def menuLoop():
         pygame.display.update()
 
 def gameLoop():
+    Forwards = True
     playing = True
     while playing == True:
         for event in pygame.event.get():
@@ -100,14 +94,16 @@ def gameLoop():
         SCREEN.fill(WHITE)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
+            Forwards = True
             F_Walk(PlayerLoc[0],PlayerLoc[1])
         elif keys[pygame.K_LEFT]:
+            Forwards = False
             B_Walk(PlayerLoc[0],PlayerLoc[1])
-        else:
+        elif pygame.KEYUP: 
             if Forwards == True:
                 SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
             elif Forwards == False:
-                SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+                SpaceLizardLe ftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
         pygame.display.update()
         clock.tick(60)
 
@@ -142,7 +138,6 @@ def CollisionCheck(x,y,w,h,x2,y2,w2,h2):
       collisionCheck = True  
 
 def F_Walk(playerX, playerY):
-    Forwards = True
     xVal = int(playerX)
     yVal = int(playerY)
     for y in range(0,2):
@@ -155,7 +150,6 @@ def F_Walk(playerX, playerY):
 
 
 def B_Walk(playerX, playerY):
-    Forwards = False
     xVal = int(playerX)
     yVal = int(playerY)
     for x in range(0,2):
@@ -171,9 +165,6 @@ def B_Walk(playerX, playerY):
 
 
 
-
-
-#def __init__(self, x, y):
     
 
 
