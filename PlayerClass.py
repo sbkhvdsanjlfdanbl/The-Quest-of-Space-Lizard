@@ -1,42 +1,54 @@
-## Creating a player Class
-
 import pygame
 from pygame.locals import *
 import Pyganim
 pygame.init()
 
+
+## Creating a player class
+
 class Player:
-    def __init__(self, x, y, hp, dmg, abilityUnlock):
+    def __init__(self, x, y, hp, abilityUnlock):
         self.x = x
         self.y = y
         self.hp = hp
-        self.dmg = dmg
+        self.abilityUnlock = abilityUnlock
         if self.abilityUnlock ==  0:
             pass
         else:
             pass
 
-    def dmgIncrease(self, dmgModify)
-        self.dmg = self.dmg + dmgModify
-
     def dmgTake(self, dmgDealt):
         self.hp = self.hp - dmgDealt
 
 
+### Sword Class
 
-SpaceLizard = Player(100, 350, 100, 10)
+class Sword:
+    def __init__(self, x, y, dmg):
+        self.x = x 
+        self.y = y
+        self.dmg = dmg
+        
+    def dmgIncrease(self, dmgModify):
+        self.dmg = self.dmg + dmgModify
+    
+    def dmgDeal(self, enemyHp):
+        enemyHp =- self.dmg
+
+
+### Creating the snake enemy class
 
 class Snake:
-    def __init__(self, x, y, hp, dmg, abilityType)
+    def __init__(self, x, y, hp, dmg, abilityType):
         self.x = x
         self.y = y
         self.hp = hp
         self.dmg = dmg
         self.abilityType = abilityType
-        if self.abilityType = "Null":
+        if self.abilityType == "Null":
             pass
-        elif self.abilityType = "Mace":
+        elif self.abilityType == "Mace":
             self.Mace = True
-
-    def dmgTake(self, dmgDealt):
-        self.hp = self.hp - dmgDealt
+	
+    def hpAdjust(self, newHp):
+        self.hp = newHp
