@@ -26,9 +26,13 @@ image4 = pygame.image.load("Walking3.png")
 image5 = pygame.image.load("Walking2.png")
 image6 = pygame.image.load("Walking1.png")
 SpaceLizard1 = pygame.image.load("normal.png")
-    
+Sword = pygame.image.load("Sword.png") ##52*68
+Sword = pygame.transform.scale(Sword, (50, 50))
+SwordBack = pygame.transform.flip(Sword, True, False)
 
 SpaceLizardConstant = Pyganim.PygAnimation([("normal.png", 1)])
+SwordConstant = Pyganim.PygAnimation([(Sword, 1)])
+SwordBackConstant = Pyganim.PygAnimation([(SwordBack, 1)])
 
 SpaceLizardLeft = pygame.transform.flip(SpaceLizard1, True, False)
 SpaceLizardLeftIdle = Pyganim.PygAnimation([(SpaceLizardLeft, 1)])
@@ -37,7 +41,7 @@ SpaceLizardAnim = Pyganim.PygAnimation([("Walking1.png", 0.1),
                                         ("Walking2.png", 0.1),
                                         ("Walking3.png", 0.1),
                                         ("Walking4.png", 0.1),
-                                        ("Walking5.png", 0.1),
+                                       ("Walking5.png", 0.1),
                                         ("Walking6.png", 0.1)])
 
 image1 = pygame.transform.flip(image1, True, False)
@@ -60,6 +64,8 @@ SpaceLizardConstant.play()
 SpaceLizardAnim.play()
 SpaceLizardBack.play()
 SpaceLizardLeftIdle.play()
+SwordConstant.play()
+SwordBackConstant.play()
                                                
 #Functions
 def PlayerInfo():
@@ -93,6 +99,10 @@ def gameLoop():
                 quitGame()
         SCREEN.fill(WHITE)
         keys = pygame.key.get_pressed()
+        if PlayerLoc[0] <= 13:
+            PlayerLoc[0] = 13
+        elif PlayerLoc[0] >= 987:
+            PlayerLoc[0] = 987
         if keys[pygame.K_RIGHT]:
             Forwards = True
             F_Walk(PlayerLoc[0],PlayerLoc[1])
@@ -102,8 +112,10 @@ def gameLoop():
         elif pygame.KEYUP: 
             if Forwards == True:
                 SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+                SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
             elif Forwards == False:
-                SpaceLizardLe ftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+                SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+                SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
         pygame.display.update()
         clock.tick(60)
 
@@ -145,6 +157,7 @@ def F_Walk(playerX, playerY):
     SCREEN.fill(WHITE)
     xVal += 5
     SpaceLizardAnim.blit(SCREEN, (xVal, yVal))
+    SwordConstant.blit(SCREEN, ((xVal+13), yVal))
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
 
@@ -154,18 +167,24 @@ def B_Walk(playerX, playerY):
     yVal = int(playerY)
     for x in range(0,2):
         PlayerLoc.remove(PlayerLoc[0])
-    #if CollisionCheck(playerLoc[0],playerLoc[1],0,0,1000,800,0,0)
-        #PreScene = True
-    #elif CollisionCheck(playerLoc[0],playerLoc[1],h,w,EnemyLoc[0],EnemyLoc[1])
     SCREEN.fill(WHITE)
     xVal -= 5
     SpaceLizardBack.blit(SCREEN, (xVal, yVal))
+    SwordBackConstant.blit(SCREEN, ((xVal-13), yVal))
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
 
-
-
-    
+def Up_Move(playerX, playerY):
+    xVal = int(playerX)
+    yVal = int(playerY)
+    for x in range(0,2):
+        PlayerLoc.remove(PlayerLoc[0])
+    SCREEN.fill(WHITE)
+    yVal += 5
+    SpaceLizardConstant.blit(Screen, (xVal, yVal))
+    SwordConstant.blit(SCREEN, ((xVal+13), yVal))
+    PlayerLoc.append(xVal)
+    PlayerLoc.append(yVal)
 
 
 menuLoop()
