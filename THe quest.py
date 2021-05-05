@@ -29,6 +29,7 @@ SpaceLizard1 = pygame.image.load("normal.png")
 Sword = pygame.image.load("Sword.png") ##52*68
 Sword = pygame.transform.scale(Sword, (50, 50))
 SwordBack = pygame.transform.flip(Sword, True, False)
+Upwards = True
 
 SpaceLizardConstant = Pyganim.PygAnimation([("normal.png", 1)])
 SwordConstant = Pyganim.PygAnimation([(Sword, 1)])
@@ -109,13 +110,22 @@ def gameLoop():
         elif keys[pygame.K_LEFT]:
             Forwards = False
             B_Walk(PlayerLoc[0],PlayerLoc[1])
-        elif pygame.KEYUP: 
+        elif keys[pygame.K_UP]:
+            if Upwards == True:
+                Up_Move(PlayerLoc[0],PlayerLoc[1], Upwards)
+            else:
+                pass
+        elif pygame.KEYUP:
             if Forwards == True:
                 SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
                 SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
+                if PlayerLoc[1] < 350:
+                    GravityEffect(PlayerLoc[0],PlayerLoc[1], Upwards)
             elif Forwards == False:
                 SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
                 SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
+                if PlayerLoc[1] < 350:
+                    GravityEffect(PlayerLoc[0],PlayerLoc[1], Upwards)
         pygame.display.update()
         clock.tick(60)
 
@@ -174,17 +184,38 @@ def B_Walk(playerX, playerY):
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
 
-def Up_Move(playerX, playerY):
+def Up_Move(playerX, playerY, Upwards):
+    xVal = int(playerX)
+    yVal = int(playerY)
+    for x in range(0,2):
+        PlayerLoc.remove(PlayerLoc[0])
+    SCREEN.fill(WHITE)
+    yVal -= 5
+    SpaceLizardConstant.blit(SCREEN, (xVal, yVal))
+    SwordConstant.blit(SCREEN, ((xVal+13), yVal))
+    PlayerLoc.append(xVal)
+    PlayerLoc.append(yVal)
+    Upwards == False
+
+def GravityEffect(playerX, playerY, Upwards):
     xVal = int(playerX)
     yVal = int(playerY)
     for x in range(0,2):
         PlayerLoc.remove(PlayerLoc[0])
     SCREEN.fill(WHITE)
     yVal += 5
-    SpaceLizardConstant.blit(Screen, (xVal, yVal))
+    SpaceLizardConstant.blit(SCREEN, (xVal, yVal))
     SwordConstant.blit(SCREEN, ((xVal+13), yVal))
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
-
+    pygame.time.wait(30)
+##    while PlayerLoc[1] < 350:
+##        PlayerY = PlayerLoc[1]
+##        PlayerLoc.remove(PlayerLoc[1])
+##        PlayerY += 2
+##        PlayerLoc.append(PlayerY)
+##        SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+##        SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
+##        clock.wait(0.3)
 
 menuLoop()
