@@ -111,21 +111,30 @@ def gameLoop():
             Forwards = False
             B_Walk(PlayerLoc[0],PlayerLoc[1])
         elif keys[pygame.K_UP]:
-            if Upwards == True:
-                Up_Move(PlayerLoc[0],PlayerLoc[1], Upwards)
-            else:
-                pass
+            Up_Move(PlayerLoc[0],PlayerLoc[1], Upwards)
         elif pygame.KEYUP:
-            if Forwards == True:
-                SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
-                SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
-                if PlayerLoc[1] < 350:
-                    GravityEffect(PlayerLoc[0],PlayerLoc[1], Upwards)
-            elif Forwards == False:
-                SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
-                SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
-                if PlayerLoc[1] < 350:
-                    GravityEffect(PlayerLoc[0],PlayerLoc[1], Upwards)
+            if Upwards == True:
+                if Forwards == True:
+                    SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+                    SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
+                    if PlayerLoc[1] < 350:
+                        GravityEffect(PlayerLoc[0],PlayerLoc[1], Upwards)
+                elif Forwards == False:
+                    SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+                    SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
+                    if PlayerLoc[1] < 350:
+                        GravityEffect(PlayerLoc[0],PlayerLoc[1], Upwards)
+            elif Upwards == False:
+                    xVal = int(PlayerLoc[0])
+                    yVal = int(PlayerLoc[1])
+                    for x in range(0,2):
+                        PlayerLoc.remove(PlayerLoc[0])
+                    SCREEN.fill(WHITE)
+                    yVal += 5
+                    SpaceLizardConstant.blit(SCREEN, (xVal, yVal))
+                    SwordConstant.blit(SCREEN, ((xVal+13), yVal))
+                    PlayerLoc.append(xVal)
+                    PlayerLoc.append(yVal)
         pygame.display.update()
         clock.tick(60)
 
@@ -208,7 +217,6 @@ def GravityEffect(playerX, playerY, Upwards):
     SwordConstant.blit(SCREEN, ((xVal+13), yVal))
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
-    pygame.time.wait(30)
 ##    while PlayerLoc[1] < 350:
 ##        PlayerY = PlayerLoc[1]
 ##        PlayerLoc.remove(PlayerLoc[1])
