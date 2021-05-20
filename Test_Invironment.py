@@ -33,6 +33,12 @@ def gameLoop():
             if event.type == pygame.QUIT:
                 quitGame()
         keys = pygame.key.get_pressed()
+        if PlayerData[3] <= 13:
+            PlayerData[3] = 13
+        elif PlayerData[3] >= 987:
+            PlayerData[3] = 987
+        elif PlayerData[4] <= 30:
+            PlayerData[4] = 30
         if keys[pygame.K_UP]:
             Up_Move(PlayerData[3],PlayerData[4])
         elif PlayerData[4] < 350:
@@ -50,21 +56,21 @@ def quitGame():
 def Up_Move(playerX, playerY):
     SCREEN.fill(WHITE)
     playerY -= 5
-    for i in range(0, len(PlayerData)):
-        PlayerData.remove(PlayerData[0])
-    PlayerData.append(R)
-    PlayerData.append(G)     
-    PlayerData.append(B)     
-    PlayerData.append(playerX)     
-    PlayerData.append(playerY)
-    PlayerData.append(player_size)
-
-def GravityEffect(playerY):
-    DecAmount = playerY - 350
-    DecAmount = DecAmount / 5
-    playerY -= DecAmount
     PlayerData[4] = playerY
 
+def GravityEffect(playerY):
+##    DecAmount = playerY - 350
+##    DecAmount = DecAmount / 10
+##    playerY -= DecAmount
+##    playerY = int(playerY // 1)
+##    print(playerY)
+##    PlayerData[4] = playerY
+##    playerY -= DecAmount
+##    playerY = int(playerY // 1)
+##    print(playerY)
+##    PlayerData[4] = playerY
+    playerY += 5
+    PlayerData[4] = playerY
 
 
 gameLoop()
