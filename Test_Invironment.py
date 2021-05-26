@@ -22,6 +22,7 @@ B = random.randint(0,255)
 player_x = 100
 player_y = 350
 player_size = 30
+Displacement = 0
 
 PlayerData = [R, G, B, player_x, player_y, player_size]
 
@@ -33,17 +34,17 @@ def gameLoop():
             if event.type == pygame.QUIT:
                 quitGame()
         keys = pygame.key.get_pressed()
-        if PlayerData[3] <= 13:
+        if PlayerData[3] < 13:
             PlayerData[3] = 13
-        elif PlayerData[3] >= 987:
+        elif PlayerData[3] > 987:
             PlayerData[3] = 987
         elif PlayerData[4] <= 30:
             PlayerData[4] = 30
         if keys[pygame.K_UP]:
-            Up_Move(PlayerData[3],PlayerData[4])
+            if Displacement < 29:
+                Up_Move(PlayerData[3],PlayerData[4])
         elif PlayerData[4] < 350:
-            for z in range(0,5):
-                GravityEffect(PlayerData[4])
+            GravityEffect(PlayerData[4])
         SCREEN.fill(WHITE)
         pygame.draw.circle(SCREEN, [PlayerData[0],PlayerData[1],PlayerData[2]], (PlayerData[3], PlayerData[4]), PlayerData[5])
         pygame.display.update()
@@ -54,23 +55,21 @@ def quitGame():
     quit()
 
 def Up_Move(playerX, playerY):
-    SCREEN.fill(WHITE)
-    playerY -= 5
-    PlayerData[4] = playerY
+    global Displacement
+    for x in range (0,5):
+        SCREEN.fill(WHITE)
+        playerY -= 5
+        PlayerData[4] = playerY
+        Displacement = Displacement + 1
+        print(Displacement)
 
 def GravityEffect(playerY):
-##    DecAmount = playerY - 350
-##    DecAmount = DecAmount / 10
-##    playerY -= DecAmount
-##    playerY = int(playerY // 1)
-##    print(playerY)
-##    PlayerData[4] = playerY
-##    playerY -= DecAmount
-##    playerY = int(playerY // 1)
-##    print(playerY)
-##    PlayerData[4] = playerY
-    playerY += 5
-    PlayerData[4] = playerY
+    global Displacement
+    for x in range(0,5):
+        SCREEN.fill(WHITE)
+        playerY += 5
+        PlayerData[4] = playerY
+        Displacement = Displacement - 1
 
 
 gameLoop()
