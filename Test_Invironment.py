@@ -61,7 +61,6 @@ def Up_Move(playerX, playerY):
         playerY -= 5
         PlayerData[4] = playerY
         Displacement = Displacement + 1
-        print(Displacement)
 
 def GravityEffect(playerY):
     global Displacement
