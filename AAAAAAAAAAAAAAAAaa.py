@@ -115,21 +115,25 @@ def gameLoop():
             B_Walk(PlayerLoc[0],PlayerLoc[1])
         elif keys[pygame.K_UP]:
             if Displacement < 29:
-                Up_Move(PlayerLoc[1])
+                Up_Move(PlayerLoc[1], Forwards)
             else:
-                SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
-                SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
+                if Forwards == True:
+                    SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+                    SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
+                else:
+                    SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
+                    SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
         elif pygame.KEYUP:
             if Forwards == True:
                 SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
                 SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
                 if PlayerLoc[1] < 350:
-                    GravityEffect(PlayerLoc[1])
+                    GravityEffect(PlayerLoc[1], Forwards)
             elif Forwards == False:
                 SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
                 SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
                 if PlayerLoc[1] < 350:
-                    GravityEffect(PlayerLoc[1])
+                    GravityEffect(PlayerLoc[1], Forwards)
         pygame.display.update()
         clock.tick(60)
 
@@ -188,25 +192,33 @@ def B_Walk(playerX, playerY):
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
 
-def Up_Move(playerY):
+def Up_Move(playerY, Forwards):
     global Displacement
     for x in range (0,5):
         SCREEN.fill(WHITE)
         playerY -= 5
         PlayerLoc[1] = playerY
         Displacement = Displacement + 1
-        SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0], playerY))
-        SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), playerY))
+        if Forwards == True:
+            SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0], playerY))
+            SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), playerY))
+        else:
+            SpaceLizardBack.blit(SCREEN, (PlayerLoc[0], playerY))
+            SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), playerY))    
 
-def GravityEffect(playerY):
+def GravityEffect(playerY, Forwards):
     global Displacement
     for x in range(0,5):
         SCREEN.fill(WHITE)
         playerY += 5
         PlayerLoc[1] = playerY
         Displacement = Displacement - 1
-        SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0], playerY))
-        SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), playerY))
+        if Forwards == True:
+            SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0], playerY))
+            SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), playerY))
+        else:
+            SpaceLizardBack.blit(SCREEN, (PlayerLoc[0], playerY))
+            SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), playerY))  
 
 
 menuLoop()
