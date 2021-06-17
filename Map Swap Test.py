@@ -31,14 +31,21 @@ def gameLoop():
                 quitGame()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
-            if SCREEN1 == False:
-                SCREEN1 = True
-                SCREEN.blit(SecondScreen, (0,0))
+            LoadedScreen()
+        elif keys[pygame.K_LEFT]:
+            SCREEN2 = True
         pygame.display.update()
         clock.tick(60)
 
 def quitGame():
     pygame.quit()
     quit()
+
+def LoadedScreen():
+    global SCREEN2
+    if SCREEN2 == False:
+        SCREEN.blit(initialScreen, (0,0))
+    elif SCREEN2 == True:
+        SCREEN.blit(SecondScreen, (0,0))
 
 gameLoop()

@@ -17,8 +17,15 @@ HEIGHT, WIDTH = 800, 1000
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("The Quest of Space Lizard 21")
 clock = pygame.time.Clock()
+
 MenuScreen = pygame.image.load("TitleScreen.png")
 MenuScreen = pygame.transform.scale(MenuScreen, (WIDTH, HEIGHT))
+initialScreen = pygame.image.load("land.png")
+initialScreen = pygame.transform.scale(initialScreen, (WIDTH, HEIGHT))
+SecondScreen = pygame.image.load("land2.png")
+SecondScreen = pygame.transform.scale(SecondScreen, (WIDTH, HEIGHT))
+SCREEN2 = False
+
 image1 = pygame.image.load("Walking6.png")
 image2 = pygame.image.load("Walking5.png")
 image3 = pygame.image.load("Walking4.png")
@@ -26,9 +33,11 @@ image4 = pygame.image.load("Walking3.png")
 image5 = pygame.image.load("Walking2.png")
 image6 = pygame.image.load("Walking1.png")
 SpaceLizard1 = pygame.image.load("normal.png")
+
 Sword = pygame.image.load("Sword.png") ##52*68
 Sword = pygame.transform.scale(Sword, (50, 50))
 SwordBack = pygame.transform.flip(Sword, True, False)
+
 Displacement = 0
 
 SpaceLizardConstant = Pyganim.PygAnimation([("normal.png", 1)])
@@ -42,7 +51,7 @@ SpaceLizardAnim = Pyganim.PygAnimation([("Walking1.png", 0.1),
                                         ("Walking2.png", 0.1),
                                         ("Walking3.png", 0.1),
                                         ("Walking4.png", 0.1),
-                                       ("Walking5.png", 0.1),
+                                        ("Walking5.png", 0.1),
                                         ("Walking6.png", 0.1)])
 
 image1 = pygame.transform.flip(image1, True, False)
@@ -92,18 +101,25 @@ def menuLoop():
         pygame.display.update()
 
 def gameLoop():
+    global SCREEN2
     Forwards = True
     playing = True
+    SCREEN.fill(WHITE)
+    LoadedScreen()
     while playing == True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quitGame()
-        SCREEN.fill(WHITE)
+        LoadedScreen()
         keys = pygame.key.get_pressed()
         if PlayerLoc[0] <= 13:
             PlayerLoc[0] = 13
+            SCREEN2 = False
+            PlayerLoc[0] = 980
         elif PlayerLoc[0] >= 987:
             PlayerLoc[0] = 987
+            SCREEN2 = True
+            PlayerLoc[0] = 100
         if keys[pygame.K_RIGHT]:
             Forwards = True
             F_Walk(PlayerLoc[0],PlayerLoc[1])
@@ -169,7 +185,7 @@ def F_Walk(playerX, playerY):
     yVal = int(playerY)
     for y in range(0,2):
         PlayerLoc.remove(PlayerLoc[0])
-    SCREEN.fill(WHITE)
+    LoadedScreen()
     xVal += 5
     SpaceLizardAnim.blit(SCREEN, (xVal, yVal))
     SwordConstant.blit(SCREEN, ((xVal+13), yVal))
@@ -182,7 +198,7 @@ def B_Walk(playerX, playerY):
     yVal = int(playerY)
     for x in range(0,2):
         PlayerLoc.remove(PlayerLoc[0])
-    SCREEN.fill(WHITE)
+    LoadedScreen()
     xVal -= 5
     SpaceLizardBack.blit(SCREEN, (xVal, yVal))
     SwordBackConstant.blit(SCREEN, ((xVal-13), yVal))
@@ -192,7 +208,7 @@ def B_Walk(playerX, playerY):
 def Up_Move(playerY, Forwards):
     global Displacement
     for x in range (0,5):
-        SCREEN.fill(WHITE)
+        LoadedScreen()
         playerY -= 5
         PlayerLoc[1] = playerY
         Displacement = Displacement + 1
@@ -206,7 +222,7 @@ def Up_Move(playerY, Forwards):
 def GravityEffect(playerY, Forwards):
     global Displacement
     for x in range(0,5):
-        SCREEN.fill(WHITE)
+        LoadedScreen()
         playerY += 5
         PlayerLoc[1] = playerY
         Displacement = Displacement - 1
@@ -216,6 +232,13 @@ def GravityEffect(playerY, Forwards):
         else:
             SpaceLizardBack.blit(SCREEN, (PlayerLoc[0], playerY))
             SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), playerY))  
+
+def LoadedScreen():
+    global SCREEN2
+    if SCREEN2 == False:
+        SCREEN.blit(initialScreen, (0,0))
+    elif SCREEN2 == True:
+        SCREEN.blit(SecondScreen, (0,0))
 
 
 menuLoop()
