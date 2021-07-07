@@ -82,7 +82,7 @@ def PlayerInfo():
     global PlayerLoc
     PlayerLoc = []
     player_x = 100
-    player_y = 350
+    player_y = 360
     PlayerLoc.append(player_x)
     PlayerLoc.append(player_y)
     gameLoop()
@@ -113,13 +113,19 @@ def gameLoop():
         LoadedScreen()
         keys = pygame.key.get_pressed()
         if PlayerLoc[0] <= 13:
-            PlayerLoc[0] = 13
-            SCREEN2 = False
-            PlayerLoc[0] = 980
+            if SCREEN2 == False:
+                PlayerLoc[0] = 13
+            else:
+                LoadedScreen()
+                PlayerLoc[0] = 980
+                SCREEN2 = False
         elif PlayerLoc[0] >= 987:
-            PlayerLoc[0] = 987
-            SCREEN2 = True
-            PlayerLoc[0] = 100
+            if SCREEN2 == True:
+                PlayerLoc[0] = 987
+            else:
+                LoadedScreen()
+                PlayerLoc[0] = 100
+                SCREEN2 = True
         if keys[pygame.K_RIGHT]:
             Forwards = True
             F_Walk(PlayerLoc[0],PlayerLoc[1])
@@ -140,12 +146,12 @@ def gameLoop():
             if Forwards == True:
                 SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
                 SwordConstant.blit(SCREEN, ((PlayerLoc[0]+13), PlayerLoc[1]))
-                if PlayerLoc[1] < 350:
+                if PlayerLoc[1] < 360:
                     GravityEffect(PlayerLoc[1], Forwards)
             elif Forwards == False:
                 SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
                 SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
-                if PlayerLoc[1] < 350:
+                if PlayerLoc[1] < 360:
                     GravityEffect(PlayerLoc[1], Forwards)
         pygame.display.update()
         clock.tick(60)
