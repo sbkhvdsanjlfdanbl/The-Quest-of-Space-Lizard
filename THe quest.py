@@ -18,6 +18,7 @@ SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("The Quest of Space Lizard 21")
 clock = pygame.time.Clock()
 
+#Loading Images for Sprites and Backgrounds and Variable Initialisation
 MenuScreen = pygame.image.load("TitleScreen.png")
 MenuScreen = pygame.transform.scale(MenuScreen, (WIDTH, HEIGHT))
 initialScreen = pygame.image.load("land.png")
@@ -70,6 +71,7 @@ SpaceLizardBack = Pyganim.PygAnimation([(image1, 0.1),
                                         (image6, 0.1)])
 
 
+#Set up for the functions for the animations
 SpaceLizardConstant.play()
 SpaceLizardAnim.play()
 SpaceLizardBack.play()
@@ -112,6 +114,7 @@ def gameLoop():
                 quitGame()
         LoadedScreen()
         keys = pygame.key.get_pressed()
+        #Swapping the Background for the player, backwards and forwards
         if PlayerLoc[0] <= 13:
             if SCREEN2 == False:
                 PlayerLoc[0] = 13
@@ -126,12 +129,14 @@ def gameLoop():
                 LoadedScreen()
                 PlayerLoc[0] = 100
                 SCREEN2 = True
+        #Walking
         if keys[pygame.K_RIGHT]:
             Forwards = True
             F_Walk(PlayerLoc[0],PlayerLoc[1])
         elif keys[pygame.K_LEFT]:
             Forwards = False
             B_Walk(PlayerLoc[0],PlayerLoc[1])
+        #Jumping
         elif keys[pygame.K_UP]:
             if Displacement < 29:
                 Up_Move(PlayerLoc[1], Forwards)
@@ -142,6 +147,7 @@ def gameLoop():
                 else:
                     SpaceLizardLeftIdle.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
                     SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
+        #Falling
         elif pygame.KEYUP:
             if Forwards == True:
                 SpaceLizardConstant.blit(SCREEN, (PlayerLoc[0],PlayerLoc[1]))
@@ -155,6 +161,7 @@ def gameLoop():
                     GravityEffect(PlayerLoc[1], Forwards)
         pygame.display.update()
         clock.tick(60)
+
 
 def button(msg,x,y,w,h,c,action=None):
     global screen
@@ -186,6 +193,7 @@ def CollisionCheck(x,y,w,h,x2,y2,w2,h2):
     if (x < (x2 + w2) and (x + w) > x2 and y < (y2 + h2) and (h + y) > y2):                  
       collisionCheck = True  
 
+#Walking Functions
 def F_Walk(playerX, playerY):
     xVal = int(playerX)
     yVal = int(playerY)
@@ -211,6 +219,7 @@ def B_Walk(playerX, playerY):
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
 
+#Jumping Function
 def Up_Move(playerY, Forwards):
     global Displacement
     for x in range (0,5):
@@ -225,6 +234,7 @@ def Up_Move(playerY, Forwards):
             SpaceLizardBack.blit(SCREEN, (PlayerLoc[0], playerY))
             SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), playerY))    
 
+#Gravity Function
 def GravityEffect(playerY, Forwards):
     global Displacement
     for x in range(0,5):
@@ -239,6 +249,7 @@ def GravityEffect(playerY, Forwards):
             SpaceLizardBack.blit(SCREEN, (PlayerLoc[0], playerY))
             SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), playerY))  
 
+#Deciding on the loaded background
 def LoadedScreen():
     global SCREEN2
     if SCREEN2 == False:
@@ -247,4 +258,5 @@ def LoadedScreen():
         SCREEN.blit(SecondScreen, (0,0))
 
 
+#Starting the program
 menuLoop()
