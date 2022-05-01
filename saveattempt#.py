@@ -10,6 +10,7 @@ BLACK = [0, 0, 0]
 GREEN = [0, 255, 0]
 WHITE = [255, 255, 255]
 ORANGE = [255, 165, 0]
+AQUA = (0, 255, 165, 255)
 
 
 #Variables / initial set up pieces.
@@ -70,6 +71,8 @@ SpaceLizardBack = Pyganim.PygAnimation([(image1, 0.1),
                                         (image5, 0.1),
                                         (image6, 0.1)])
 
+allScores = []
+
 
 #Set up for the functions for the animations
 SpaceLizardConstant.play()
@@ -97,7 +100,7 @@ def menuLoop():
                 quitGame()
 
         SCREEN.blit(MenuScreen,(0,0))
-        button("Play"           ,350,125,255,60,ORANGE, PlayerInfo)     
+        button("Play"           ,350,125,255,60,ORANGE, SaveSystem)
         button("Instructions"   ,350,200,255,60,ORANGE)#,instructionsLoop)
         button("Exit"           ,350,275,255,60,ORANGE, quitGame)
         pygame.display.update()
@@ -186,7 +189,7 @@ def quitGame():
     quit()
 
 def ConversationScreen():
-    Screen.fill(BLACK)
+    SCREEN.fill(BLACK)
 
 #                      width of image, height of image
 def CollisionCheck(x,y,w,h,x2,y2,w2,h2):
@@ -259,19 +262,30 @@ def LoadedScreen():
 
 #SaveSystem
 def SaveSystem():
-    SaveLocations = []
-    with open('PlayerSaves.csv', 'r') as dataFile:
-        print(3)
+    with open('PlayerSaves.csv') as dataFile:
         fileReader = csv.DictReader(dataFile)
         for row in fileReader:
-            print(4)
-            SaveLocations.append([row['playerName'] ,row['SaveCode']])
+            allScores.append([row['playerName'], row['SaveCode']])
+        print(allScores)
+    displayScore()
 
-    for i in range(len(SaveLocations)):
-        print(5)
-        print(SaveLocations[i])
-        menuLoop()
-        
+def displayScore():
+    difficultyShowing = True
+    while difficultyShowing == True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quitGame()
+        font = pygame.font.SysFont("comicsansms", 50)
+        pygame.draw.rect(SCREEN, AQUA, pygame.Rect(585, 100, 200, 275))
+        word = str(allScores[len(allScores)-(len(allScores)-0)][0])
+        button(word, 585, (125+(75*0)), 180, 60, ORANGE, PlayerInfo)
+        word = str(allScores[len(allScores)-(len(allScores)-1)][0])
+        button(word, 585, (125+(75*1)), 180, 60, ORANGE, PlayerInfo)
+        word = str(allScores[len(allScores)-(len(allScores)-2)][0])
+        button(word, 585, (125+(75*2)), 180, 60, ORANGE, PlayerInfo)
+        pygame.display.update()
+        clock.tick(60)
+
 #Starting the program
-SaveSystem()
+menuLoop()
 

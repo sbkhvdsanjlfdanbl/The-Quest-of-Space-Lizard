@@ -4,13 +4,11 @@ from pygame.locals import *
 import Pyganim
 pygame.init()
 
-
 #Colours
 BLACK = [0, 0, 0]
 GREEN = [0, 255, 0]
 WHITE = [255, 255, 255]
 ORANGE = [255, 165, 0]
-
 
 #Variables / initial set up pieces.
 HEIGHT, WIDTH = 800, 1000
@@ -26,6 +24,9 @@ initialScreen = pygame.transform.scale(initialScreen, (WIDTH, HEIGHT))
 SecondScreen = pygame.image.load("land2.png")
 SecondScreen = pygame.transform.scale(SecondScreen, (WIDTH, HEIGHT))
 SCREEN2 = False
+global FrogConvo1, FrogConvo2
+FrogConvo1 = False
+FrogConvo2 = False
 
 image1 = pygame.image.load("Walking6.png")
 image2 = pygame.image.load("Walking5.png")
@@ -38,6 +39,12 @@ SpaceLizard1 = pygame.image.load("normal.png")
 Sword = pygame.image.load("Sword.png") ##52*68
 Sword = pygame.transform.scale(Sword, (50, 50))
 SwordBack = pygame.transform.flip(Sword, True, False)
+
+FrogIdle = Pyganim.PygAnimation([("frog idle.png", 1)])
+FrogAppear = Pyganim.PygAnimation([("frog appearance1.png", 1),
+                                   ("frog appearance2.png", 1),
+                                   ("frog appearance3.png", 1),
+                                   ("frog appearance4.png", 1)])
 
 Displacement = 0
 
@@ -78,7 +85,10 @@ SpaceLizardBack.play()
 SpaceLizardLeftIdle.play()
 SwordConstant.play()
 SwordBackConstant.play()
-                                               
+FrogIdle.play()
+FrogAppear.play()
+
+
 #Functions
 def PlayerInfo():
     global PlayerLoc
@@ -97,13 +107,13 @@ def menuLoop():
                 quitGame()
 
         SCREEN.blit(MenuScreen,(0,0))
-        button("Play"           ,10,125,255,60,ORANGE, PlayerInfo)     
-        button("Instructions"   ,10,200,255,60,ORANGE)#,instructionsLoop)
-        button("Exit"           ,10,275,255,60,ORANGE, quitGame)
+        button("Play"           ,300,125,255,60,ORANGE, PlayerInfo)     
+        button("Instructions"   ,300,200,255,60,ORANGE)#,instructionsLoop)
+        button("Exit"           ,300,275,255,60,ORANGE, quitGame)
         pygame.display.update()
 
 def gameLoop():
-    global SCREEN2
+    global SCREEN2, FrogConvo1
     Forwards = True
     playing = True
     SCREEN.fill(WHITE)
@@ -159,6 +169,11 @@ def gameLoop():
                 SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), PlayerLoc[1]))
                 if PlayerLoc[1] < 360:
                     GravityEffect(PlayerLoc[1], Forwards)
+
+        if SCREEN2 == True:
+             if CollisionCheck(PlayerLoc[0],PlayerLoc[1],52,68,frendSpriteX, frendSpriteY,81,103) == True:
+                 FrogConvo1 = True
+
         pygame.display.update()
         clock.tick(60)
 
@@ -186,12 +201,18 @@ def quitGame():
     quit()
 
 def ConversationScreen():
-    SCREEN.fill(BLACK)
+    global convoFont, convoText
+    #Screen.fill(BLACK)
+    convoFont = pygame.font.SysFont("arial", 20)
+
+    convoText = convoFont.render("Hello there, do you need help on your quest?", True, BLACK)
+    SCREEN.blit(convoText, (200,200))
 
 #                      width of image, height of image
 def CollisionCheck(x,y,w,h,x2,y2,w2,h2):
     if (x < (x2 + w2) and (x + w) > x2 and y < (y2 + h2) and (h + y) > y2):                  
-      collisionCheck = True  
+      collisionCheck = True
+      ConversationScreen()
 
 #Walking Functions
 def F_Walk(playerX, playerY):
@@ -251,11 +272,18 @@ def GravityEffect(playerY, Forwards):
 
 #Deciding on the loaded background
 def LoadedScreen():
-    global SCREEN2
+    global SCREEN2, frendSpriteX, frendSpriteY, FrogConvo1, FrogConvo2
+    frendSpriteX = 600
+    frendSpriteY = 350
     if SCREEN2 == False:
         SCREEN.blit(initialScreen, (0,0))
     elif SCREEN2 == True:
         SCREEN.blit(SecondScreen, (0,0))
+        if FrogConvo1 == True:
+            FrogAppear.blit(SCREEN, (frendSpriteX, frendSpriteY))
+        if FrogConvo2 == True:
+            FrogIdle.blit(SCREEN, (frendSpriteX, frendSpriteY))
+
 
 
 #Starting the program

@@ -16,12 +16,12 @@ SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 clock = pygame.time.Clock()
 score = 0
 
-menuScreen = pygame.image.load("Title Screen.png")
+menuScreen = pygame.image.load("TitleScreen.png")
 menuScreen = pygame.transform.scale(menuScreen, (WIDTH, HEIGHT))
 
-EasyDifgameSong = pygame.mixer.Sound("Laser Groove.ogg")
-MedDifgameSong = pygame.mixer.Sound("Getting it Done.ogg")
-HardDifgameSong = pygame.mixer.Sound("Mighty Like Us.ogg")
+#EasyDifgameSong = pygame.mixer.Sound("Laser Groove.ogg")
+#MedDifgameSong = pygame.mixer.Sound("Getting it Done.ogg")
+#HardDifgameSong = pygame.mixer.Sound("Mighty Like Us.ogg")
 
 def clickLocation(x1, y1, x2, y2):
     return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
@@ -136,21 +136,21 @@ def difficultyChoiceScreen():
 
 def easyMode():
     global chosenSong, balloonSpeed
-    chosenSong = EasyDifgameSong
+    #chosenSong = EasyDifgameSong
     balloonSpeed = 2
     dataForBallons(20)
     gameLoop()
 
 def mediumMode():
     global chosenSong, balloonSpeed
-    chosenSong = MedDifgameSong
+    #chosenSong = MedDifgameSong
     balloonSpeed = 4
     dataForBallons(40)
     gameLoop()
 
 def hardMode():
     global chosenSong, balloonSpeed
-    chosenSong = HardDifgameSong
+    #chosenSong = HardDifgameSong
     balloonSpeed = 6
     dataForBallons(60)
     gameLoop()
