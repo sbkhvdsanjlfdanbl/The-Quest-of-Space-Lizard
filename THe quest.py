@@ -19,7 +19,7 @@ pygame.display.set_caption("The Quest of Space Lizard 21")
 clock = pygame.time.Clock()
 
 #Loading Images for Sprites and Backgrounds and Variable Initialisation
-MenuScreen = pygame.image.load("TitleScreen.png")
+MenuScreen = pygame.image.load("TitleScreen2.png")
 MenuScreen = pygame.transform.scale(MenuScreen, (WIDTH, HEIGHT))
 initialScreen = pygame.image.load("land.png")
 initialScreen = pygame.transform.scale(initialScreen, (WIDTH, HEIGHT))
@@ -97,9 +97,9 @@ def menuLoop():
                 quitGame()
 
         SCREEN.blit(MenuScreen,(0,0))
-        button("Play"           ,10,125,255,60,ORANGE, PlayerInfo)     
-        button("Instructions"   ,10,200,255,60,ORANGE)#,instructionsLoop)
-        button("Exit"           ,10,275,255,60,ORANGE, quitGame)
+        button("Play"           ,350,125,255,60,ORANGE, PlayerInfo)     
+        button("Instructions"   ,350,200,255,60,ORANGE)#,instructionsLoop)
+        button("Exit"           ,350,275,255,60,ORANGE, quitGame)
         pygame.display.update()
 
 def gameLoop():
@@ -186,7 +186,7 @@ def quitGame():
     quit()
 
 def ConversationScreen():
-    SCREEN.fill(BLACK)
+    Screen.fill(BLACK)
 
 #                      width of image, height of image
 def CollisionCheck(x,y,w,h,x2,y2,w2,h2):
