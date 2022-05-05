@@ -1,3 +1,5 @@
+# An attempt to create a high scores table, and to get it to display as buttons.
+
 import csv, pygame
 pygame.init()
 
@@ -100,3 +102,4 @@ for x in range(len(allScores)):
     button(word, 255, (200 + (75 * x)), 255, 60, ORANGE, LoadSave(x))
     pygame.display.update()
     clock.tick(60)
+

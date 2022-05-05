@@ -80,7 +80,7 @@ def gameEnd():
     while gameEnded == True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                guitGame()
+                quitGame()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     userText = userText[:-1]

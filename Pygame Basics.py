@@ -1,3 +1,5 @@
+# Balloon pop program, works I guess?
+
 import pygame, random, math
 pygame.init()
 

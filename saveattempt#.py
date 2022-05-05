@@ -1,4 +1,6 @@
-#Libraries 
+# Reads from a CSV file, displays the top 3 saves, is more than likely inefficient, works.
+
+#Libraries
 import pygame, random, csv
 from pygame.locals import *
 import Pyganim

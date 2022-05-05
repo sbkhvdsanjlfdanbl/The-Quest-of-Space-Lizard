@@ -1,5 +1,4 @@
-playerName,SaveCode
-Sam,12
-Derek,23
-Carl,42
-Tim,51
+playerName,SaveCode,SlotNum
+sam,0,0
+derek,1,1
+carl,1,2

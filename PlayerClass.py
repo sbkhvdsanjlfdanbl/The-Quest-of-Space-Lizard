@@ -1,3 +1,5 @@
+# Meant to be used to create classes for the player, enemies and player weapons. Still in progress.
+
 import pygame
 from pygame.locals import *
 import Pyganim
@@ -49,6 +51,6 @@ class Snake:
             pass
         elif self.abilityType == "Mace":
             self.Mace = True
-	
+
     def hpAdjust(self, newHp):
         self.hp = newHp

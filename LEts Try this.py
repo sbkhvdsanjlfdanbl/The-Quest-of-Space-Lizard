@@ -1,3 +1,5 @@
+# Playing animations to test out pyganim.
+
 import pygame
 from pygame.locals import *
 import Pyganim

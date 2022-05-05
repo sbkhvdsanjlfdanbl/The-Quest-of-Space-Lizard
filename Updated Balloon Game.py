@@ -1,3 +1,5 @@
+# Balloon game, functional, pressing the balloons is unforgiving.
+
 ##### TO DO LIST #####
 # Buttons working
 # High scores file
@@ -88,6 +90,7 @@ def dataForBallons(amount):
         yLoc = random.randint(500,1800)
         size = random.randint(30,80)
         bData.append([R, G, B, xLoc, yLoc, size, i])
+        print(bData[i][0])
 
 def displayScore():
     font = pygame.font.SysFont("comicsansms", 50)
@@ -139,6 +142,7 @@ def easyMode():
     #chosenSong = EasyDifgameSong
     balloonSpeed = 2
     dataForBallons(20)
+    print(bData)
     gameLoop()
 
 def mediumMode():

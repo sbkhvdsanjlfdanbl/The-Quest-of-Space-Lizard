@@ -24,9 +24,11 @@ initialScreen = pygame.transform.scale(initialScreen, (WIDTH, HEIGHT))
 SecondScreen = pygame.image.load("land2.png")
 SecondScreen = pygame.transform.scale(SecondScreen, (WIDTH, HEIGHT))
 SCREEN2 = False
-global FrogConvo1, FrogConvo2
+
 FrogConvo1 = False
 FrogConvo2 = False
+frendSpriteX = 600
+frendSpriteY = 350
 
 image1 = pygame.image.load("Walking6.png")
 image2 = pygame.image.load("Walking5.png")
@@ -44,9 +46,10 @@ FrogIdle = Pyganim.PygAnimation([("frog idle.png", 1)])
 FrogAppear = Pyganim.PygAnimation([("frog appearance1.png", 1),
                                    ("frog appearance2.png", 1),
                                    ("frog appearance3.png", 1),
-                                   ("frog appearance4.png", 1)])
+                                   ("frog appearance4.png", 1)], loop=False)
 
 Displacement = 0
+zero = 0
 
 SpaceLizardConstant = Pyganim.PygAnimation([("normal.png", 1)])
 SwordConstant = Pyganim.PygAnimation([(Sword, 1)])
@@ -86,7 +89,6 @@ SpaceLizardLeftIdle.play()
 SwordConstant.play()
 SwordBackConstant.play()
 FrogIdle.play()
-FrogAppear.play()
 
 
 #Functions
@@ -171,8 +173,7 @@ def gameLoop():
                     GravityEffect(PlayerLoc[1], Forwards)
 
         if SCREEN2 == True:
-             if CollisionCheck(PlayerLoc[0],PlayerLoc[1],52,68,frendSpriteX, frendSpriteY,81,103) == True:
-                 FrogConvo1 = True
+            CollisionCheck(PlayerLoc[0],PlayerLoc[1],52,68,(frendSpriteX-300), frendSpriteY,81,103)
 
         pygame.display.update()
         clock.tick(60)
@@ -200,21 +201,16 @@ def quitGame():
     pygame.quit()
     quit()
 
-def ConversationScreen():
-    global convoFont, convoText
-    #Screen.fill(BLACK)
-    convoFont = pygame.font.SysFont("arial", 20)
-
-    convoText = convoFont.render("Hello there, do you need help on your quest?", True, BLACK)
-    SCREEN.blit(convoText, (200,200))
 
 #                      width of image, height of image
 def CollisionCheck(x,y,w,h,x2,y2,w2,h2):
-    if (x < (x2 + w2) and (x + w) > x2 and y < (y2 + h2) and (h + y) > y2):                  
-      collisionCheck = True
-      ConversationScreen()
+    global FrogConvo1
+    if x < (x2 + w2) and (x + w) > x2 and y < (y2 + h2) and (h + y) > y2:
+        FrogConvo1 = True
+        ConversationScreen()
 
-#Walking Functions
+
+# Walking Functions
 def F_Walk(playerX, playerY):
     xVal = int(playerX)
     yVal = int(playerY)
@@ -240,7 +236,7 @@ def B_Walk(playerX, playerY):
     PlayerLoc.append(xVal)
     PlayerLoc.append(yVal)
 
-#Jumping Function
+# Jumping Function
 def Up_Move(playerY, Forwards):
     global Displacement
     for x in range (0,5):
@@ -254,6 +250,7 @@ def Up_Move(playerY, Forwards):
         else:
             SpaceLizardBack.blit(SCREEN, (PlayerLoc[0], playerY))
             SwordBackConstant.blit(SCREEN, ((PlayerLoc[0]-13), playerY))    
+
 
 #Gravity Function
 def GravityEffect(playerY, Forwards):
@@ -272,19 +269,37 @@ def GravityEffect(playerY, Forwards):
 
 #Deciding on the loaded background
 def LoadedScreen():
-    global SCREEN2, frendSpriteX, frendSpriteY, FrogConvo1, FrogConvo2
-    frendSpriteX = 600
-    frendSpriteY = 350
+    global SCREEN2
     if SCREEN2 == False:
         SCREEN.blit(initialScreen, (0,0))
     elif SCREEN2 == True:
         SCREEN.blit(SecondScreen, (0,0))
-        if FrogConvo1 == True:
-            FrogAppear.blit(SCREEN, (frendSpriteX, frendSpriteY))
-        if FrogConvo2 == True:
-            FrogIdle.blit(SCREEN, (frendSpriteX, frendSpriteY))
 
 
+def ConversationScreen():
+    global convoFont, convoText, FrogConvo1
+    FrogAppearFunc()
+    convoFont = pygame.font.SysFont("arial", 20)
+    convoText = convoFont.render("Hello there, do you need help on your quest?", True, BLACK)
+    SCREEN.blit(convoText, (200,200))
 
-#Starting the program
+
+def FrogAppearFunc():
+    global FrogConvo1, zero
+    FrogAppear.play()
+    FrogAppear.blit(SCREEN, (frendSpriteX, frendSpriteY))
+    if FrogAppear.isFinished() == True:
+        FrogIdle.blit(SCREEN, (frendSpriteX, frendSpriteY))
+        FrogAppear.stop()
+
+
+# If Space Lizard has Started Screen 2, play animation, if reaches frenSpritex-300, play constant?
+# Do it procedurally, then attempt to put in the text, maybe boot up a white screen version to try and put the frog in
+# with button presses if it doesn't work. Def need to clean up this file.
+# Try combine this with saveattempt.py, in a main quest file. Need to upload main ver. from school to github.
+
+
+# Starting the program
 menuLoop()
+
+# if player presses left, if player is on screen 2, and frogConvo1 != True Frog appear, else, frog constant

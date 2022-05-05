@@ -1,3 +1,5 @@
+# Makes the map swap once, when left is pressed.
+
 import pygame, random
 from pygame.locals import *
 import Pyganim
