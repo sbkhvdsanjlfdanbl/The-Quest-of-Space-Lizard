@@ -1,7 +1,10 @@
 # Libraries
-import pygame, random, csv
+import pygame, csv
+# Required if you don't have the Pyganim repository installed
 from pygame.locals import *
 import Pyganim
+
+# Starting Pygame
 pygame.init()
 
 # Colours
@@ -17,19 +20,19 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("The Quest of Space Lizard 21")
 clock = pygame.time.Clock()
 
-# Loading Images for Sprites and Backgrounds and Variable Initialisation
+# Loading Images for Sprites and Backgrounds
 MenuScreen = pygame.image.load("TitleScreen.png")
 MenuScreen = pygame.transform.scale(MenuScreen, (WIDTH, HEIGHT))
 initialScreen = pygame.image.load("land.png")
 initialScreen = pygame.transform.scale(initialScreen, (WIDTH, HEIGHT))
 SecondScreen = pygame.image.load("land2.png")
 SecondScreen = pygame.transform.scale(SecondScreen, (WIDTH, HEIGHT))
+
+# Boolean Variables
 SCREEN2 = False
 NewGameVar = False
 
-frendSpriteX = 600
-frendSpriteY = 350
-
+# Creating reversed image sprites
 image1 = pygame.image.load("Walking6.png")
 image2 = pygame.image.load("Walking5.png")
 image3 = pygame.image.load("Walking4.png")
@@ -42,17 +45,25 @@ Sword = pygame.image.load("Sword.png")  # 52*68
 Sword = pygame.transform.scale(Sword, (50, 50))
 SwordBack = pygame.transform.flip(Sword, True, False)
 
+# Setting up the frog.
+# Frog Location
+frendSpriteX = 600
+frendSpriteY = 350
+
+# Frog Sprites and Animation
 FrogIdle = Pyganim.PygAnimation([("frog idle.png", 1)])
 FrogAppear = Pyganim.PygAnimation([("frog appearance1.png", 2),
                                    ("frog appearance2.png", 2),
                                    ("frog appearance3.png", 2),
                                    ("frog appearance4.png", 2)], loop=False)
 
+# Variables
 Displacement = 0
 SaveVal = 0
 SaveSlot = 0
 WrittenWord = ""
 
+# Space Lizard animations
 SpaceLizardConstant = Pyganim.PygAnimation([("normal.png", 1)])
 SwordConstant = Pyganim.PygAnimation([(Sword, 1)])
 SwordBackConstant = Pyganim.PygAnimation([(SwordBack, 1)])
@@ -67,6 +78,7 @@ SpaceLizardAnim = Pyganim.PygAnimation([("Walking1.png", 0.1),
                                         ("Walking5.png", 0.1),
                                         ("Walking6.png", 0.1)])
 
+# Reversing sprite images
 image1 = pygame.transform.flip(image1, True, False)
 image2 = pygame.transform.flip(image2, True, False)
 image3 = pygame.transform.flip(image3, True, False)
@@ -81,6 +93,7 @@ SpaceLizardBack = Pyganim.PygAnimation([(image1, 0.1),
                                         (image5, 0.1),
                                         (image6, 0.1)])
 
+# This List contains all the data from the csv file
 allScores = []
 
 # Set up for the functions for the animations
@@ -104,6 +117,7 @@ def PlayerInfo():
     gameLoop()
 
 
+# This runs the menu code and allow the player to exit the game or play the game.
 def menuLoop():
     menuShowing = True
     while menuShowing == True:
@@ -117,6 +131,7 @@ def menuLoop():
         pygame.display.update()
 
 
+# This runs the main gameplay loop, and is where the players inputs are checked and responded to
 def gameLoop():
     global SCREEN2
     Forwards = True
@@ -195,6 +210,7 @@ def gameLoop():
         clock.tick(60)
 
 
+# This is the original button code, it runs the function included as a parameter, when the button it creates is pressed.
 def button(msg, x, y, w, h, c, action=None):
     global screen
     mouse = pygame.mouse.get_pos()
@@ -210,17 +226,20 @@ def button(msg, x, y, w, h, c, action=None):
     SCREEN.blit(textSurf, textRect)
 
 
+# This code allows me to display text on the screen
 def textObjects(text, font):
     textSurface = font.render(text, True, BLACK)
     return textSurface, textSurface.get_rect()
 
 
+# Allows for exiting the game
 def quitGame():
     pygame.quit()
     quit()
 
 
 # Walking Functions
+# Walking forwards
 def F_Walk(playerX, playerY):
     xVal = int(playerX)
     yVal = int(playerY)
@@ -234,6 +253,7 @@ def F_Walk(playerX, playerY):
     PlayerLoc.append(yVal)
 
 
+# Walking backwards
 def B_Walk(playerX, playerY):
     xVal = int(playerX)
     yVal = int(playerY)
@@ -289,15 +309,16 @@ def LoadedScreen():
 
 
 # SaveSystem
+# This opens the CSV file, and reads all the data from within, before saving all the information to allScores
 def SaveSystem():
     with open('PlayerSaves.csv') as dataFile:
         fileReader = csv.DictReader(dataFile)
         for row in fileReader:
             allScores.append([row['playerName'], row['SaveCode'], row['SlotNum']])
-            print(allScores)
     displaySaves()
 
 
+# This plays after pressing play, the player is able to choose an already existing save, or create a new game
 def displaySaves():
     difficultyShowing = True
     while difficultyShowing == True:
@@ -322,6 +343,8 @@ def displaySaves():
         clock.tick(60)
 
 
+# This button code allows me to pass a parameter to the function at the end, of the parameters,
+# without the function running immediately
 def ButtonSaves(msg, x, y, w, h, c, z, action=None):
     global screen, SaveSlot
     mouse = pygame.mouse.get_pos()
@@ -338,28 +361,31 @@ def ButtonSaves(msg, x, y, w, h, c, z, action=None):
     SCREEN.blit(textSurf, textRect)
 
 
+# This function loads the data in a selected slot, assuming that selection is not 'New Game'
 def LoadSave(SaveSlot):
     global FrogConvo1, SCREEN2, WrittenWord
     SaveLocation = int(allScores[SaveSlot][1])
     WrittenWord = allScores[SaveSlot][0]
     if SaveLocation == 0:
         PlayerInfo()
-    if SaveLocation == 1:
+    elif SaveLocation == 1:
         SCREEN2 = True
         PlayerInfo()
-    # Etc.
+    # This will be updated in the future to include more statements when I add more to the gameplay
 
 
+# This code saves the players' location in the game, using an incremental variable which is passed to the csv file later
 def SaveSaves():
     global SaveVal
     if SCREEN2 == False:
         SaveGame(WrittenWord)
-        # Technically need to save the new players name/Give an input.
     elif SCREEN2 == True:
         SaveVal += 1
         SaveGame(WrittenWord)
 
 
+# This code allows the player to input and save their name when creating a new game
+# There may be an easier way of scanning the input and saving to a variable, but this works.
 def NameLoop():
     global WrittenWord
     playing = True
@@ -468,9 +494,9 @@ def NameLoop():
         clock.tick(10)
 
 
+# This code saves the players' information into the CSV file and saves into the slot they either picked, or overwrote.
 def SaveGame(playername):
     SaveInfo = playername, SaveVal, SaveSlot
-    print(SaveInfo)
     with open('PlayerSaves.csv', 'w') as dataFile:
         if SaveSlot == 0:
             allScores[0] = SaveInfo
@@ -495,21 +521,25 @@ def SaveGame(playername):
             quitGame()
 
 
+# This code runs if the player selects new game. This runs the NameLoop function, and changes the statement
+# within displaySaves to allow the player to overwrite a current save.
 def NewGame():
     global NewGameVar
     NameLoop()
     NewGameVar = True
 
 
+# This function saves the location to overwrite when a new game is run later in the code.
 def overwriteFunc(SaveLoc):
     global SaveSlot
     SaveSlot = SaveLoc
     PlayerInfo()
 
+
 # Starting the program
 menuLoop()
 
 # To do:
-# Enemy/Integrate classes.
+# Enemies/Integrate classes.
 # New screens.
 # Add attack animation
