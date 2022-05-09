@@ -205,7 +205,8 @@ def gameLoop():
                 SCREEN.blit(convoPT1, (200, 200))
                 SCREEN.blit(convoPT2, (200, 250))
                 SCREEN.blit(convoPT3, (200, 300))
-
+                # More if statements would need to be added throughout this segment in the future when more content
+                # is added
         pygame.display.update()
         clock.tick(60)
 
@@ -306,6 +307,7 @@ def LoadedScreen():
         SCREEN.blit(initialScreen, (0,0))
     elif SCREEN2 == True:
         SCREEN.blit(SecondScreen, (0,0))
+    # extra  nested if statements would be required to add more screens to the game
 
 
 # SaveSystem
@@ -366,6 +368,7 @@ def LoadSave(SaveSlot):
     global FrogConvo1, SCREEN2, WrittenWord
     SaveLocation = int(allScores[SaveSlot][1])
     WrittenWord = allScores[SaveSlot][0]
+
     if SaveLocation == 0:
         PlayerInfo()
     elif SaveLocation == 1:
@@ -382,6 +385,7 @@ def SaveSaves():
     elif SCREEN2 == True:
         SaveVal += 1
         SaveGame(WrittenWord)
+    # As the game progresses, more if statements would be needed to account for more segments of the game
 
 
 # This code allows the player to input and save their name when creating a new game
