@@ -88,9 +88,9 @@ def menuLoop():
                 quitGame()
 
         SCREEN.blit(MenuScreen,(0,0))
-        button("Play"           ,10,125,255,60,ORANGE, PlayerInfo)     
-        button("Instructions"   ,10,200,255,60,ORANGE)#,instructionsLoop)
-        button("Exit"           ,10,275,255,60,ORANGE, quitGame)
+        button("Play"           ,300,125,255,60,ORANGE, PlayerInfo)
+        button("Instructions"   ,300,200,255,60,ORANGE)#,instructionsLoop)
+        button("Exit"           ,300,275,255,60,ORANGE, quitGame)
         pygame.display.update()
 
 def gameLoop():
